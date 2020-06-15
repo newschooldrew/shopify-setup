@@ -15,10 +15,11 @@ import {
     state = {
       discount: '10%',
       enabled: false,
+      title:''
     };
   
     render() {
-      const { discount, enabled } = this.state;
+      const { discount, enabled, title } = this.state;
       const contentStatus = enabled ? 'Disable' : 'Enable';
       const textStatus = enabled ? 'enabled' : 'disabled';
   
@@ -47,6 +48,7 @@ import {
                 </Form>
               </Card>
             </Layout.AnnotatedSection>
+            {/* Price Update */}
             <Layout.AnnotatedSection
             title="Price updates"
             description="Temporarily disable all Sample App price updates"
@@ -62,6 +64,28 @@ import {
               <TextStyle variation="strong">{textStatus}</TextStyle>.
             </SettingToggle>
           </Layout.AnnotatedSection>
+          <Layout.AnnotatedSection
+            title="Create Product"
+            description="Create Product"
+          >
+              <Card sectioned>
+                <Form onSubmit={this.handleSubmit}>
+                  <FormLayout>
+                    <TextField
+                      value={title}
+                      onChange={this.handleChange('title')}
+                      label="Create TItle percentage"
+                      type="discount"
+                    />
+                    <Stack distribution="trailing">
+                      <Button primary submit>
+                        Save
+                      </Button>
+                    </Stack>
+                  </FormLayout>
+                </Form>
+              </Card>
+          </Layout.AnnotatedSection>
           </Layout>
         </Page>
       );
@@ -70,6 +94,7 @@ import {
     handleSubmit = () => {
       this.setState({
         discount: this.state.discount,
+        title:this.state.title
       });
       console.log('submission', this.state);
     };

@@ -14,6 +14,7 @@ const router = new Router();
 const {receiveWebhook, registerWebhook} = require('@shopify/koa-shopify-webhooks');
 const { ApiVersion } = require('@shopify/koa-shopify-graphql-proxy');
 const getSubscriptionUrl = require('./server/getSubscriptionUrl');
+const createProduct = require('./server/createProduct');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -31,7 +32,7 @@ app.prepare().then(() => {
         createShopifyAuth({
           apiKey: SHOPIFY_API_KEY,
           secret: SHOPIFY_API_SECRET_KEY,
-          scopes: ['read_products','write_products'],
+          scopes: ['read_products','write_products','write_checkouts','write_discounts','read_discounts'],
           async afterAuth(ctx) {
             const { shop, accessToken } = ctx.session;
             ctx.redirect('/');
@@ -54,7 +55,8 @@ app.prepare().then(() => {
                 console.log('Failed to register webhook', registration.result.data.webhookSubscriptionCreate);
               }
 
-              await getSubscriptionUrl(ctx, accessToken, shop);
+              // await getSubscriptionUrl(ctx, accessToken, shop);
+              await createProduct(ctx, accessToken, shop);
           },
         }),
       );
